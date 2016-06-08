@@ -5,8 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-char *optarg = nullptr;
-int optind = 1;
+
 using namespace std;
 
 namespace Question1
@@ -112,8 +111,6 @@ namespace Question2
 	}
 }
 
-
-
 namespace Question4
 {
 	template <class T>
@@ -172,62 +169,79 @@ namespace Question4
 		void ReepackingChenge()
 		{
 			SNodeList <T> *clone_vector = m_head;
-			while (clone_vector != nullptr && clone_vector->next != nullptr && clone_vector->next->next != nullptr)
-			{									
-				SNodeList <T> *previous = FindPenultimate(m_head);
-				SNodeList <T> *next = clone_vector->next;
-				Insert(clone_vector, clone_vector->next, previous, m_tail);
-				m_tail = previous;
-				clone_vector = next;
-			}
-		}
-				
-		void Insert(
-			SNodeList<T> *previous,
-			SNodeList<T> *next_, 
-			SNodeList<T> *previous_added_,
-			SNodeList<T> *added_)
-		{			
-			previous->next = added_;
-			previous_added_->next = added_->next;
-			added_->next = next_;
-		}
-
-		template <class T>
-		SNodeList<T> * FindPenultimate(SNodeList<T> *list_)
-		{
-			while (list_->next->next != nullptr)
+			while (clone_vector->next->next != nullptr)
 			{
-				list_ = list_->next;				
-			}				
-
-			return list_;
+				SNodeList <T> *temp = clone_vector->next;
+				SNodeList<T> *new_tail = FindTail(clone_vector);
+				clone_vector->next = new_tail;
+				new_tail->next = temp;
+				clone_vector = temp;
+			}
 		}
 
 	};
+	/*
+	template <class T>
+	SNodeList<T> * CreateList(vector<T> data_)
+	{
+		SNodeList<T> *list = new SNodeList<T>;
+		for_each(
+			data_.begin(),
+			data_.end(),
+			[&list](T data) mutable
+			{
+				static SNodeList<T> *iterator = list;				
+				iterator->data = data;
+				iterator->next = new SNodeList<T>();
+				iterator = iterator->next;		
+				iterator->next = nullptr;
+		}
+		);
 
+		SNodeList<T> *temp = FindTail(list);
+
+		return list;
+	}
+	*/
+	template <class T>
+	void OutputSVector(SNodeList<T> *list_)
+	{
+		SNodeList<T> *iterator = list_;
+		while (iterator->next != nullptr)
+		{
+			cout << iterator->data << endl;
+			iterator = iterator->next;
+		}
+	}
+
+
+	// Переупаковывает, создавая новый
+	
+	template <class T>
+	SNodeList<T> * RepackingNew(SNodeList<T> *vector)
+	{
+		Vector <T> *clone_vector = *vector_;
+		while (clone_vector->next != vector_.next || clone_vector != vector_)
+		{
+
+		}
+	}
+	
 }
 
-
-#include <stdio.h>
-
-
-
-int main(int argc, char * argv[]) {
-
+int _tmain(int argc, _TCHAR* argv[])
+{
+	vector<int> data{ 1, 2, 3, 4, 5 };
 	Question4::CList<int> *list = new Question4::CList<int>();
 	list->Add(1);
 	list->Add(2);
 	list->Add(3);
-	//list->Add(4);
-	//list->Add(5);
-	//list->Add(6);
-	//list->Add(7);
-	//list->Add(8);
+	list->Add(4);
+	list->Add(5);
 	list->Show();
-
+		
 	list->ReepackingChenge<int>();
-	list->Show();
-	
 
+	return 0;
 }
+
